@@ -55,6 +55,9 @@ parser.execute(formula, true, true);
 // You have one coupon expiring on 11/11/19
 ```
 
+You can find more examples at `./cpp_src/PureParserExamples.cpp`  
+and run them by `make cpp_run`
+
 ### C example
 
 ```
@@ -76,6 +79,9 @@ pure_parser_execute(&parser, formula, true, true, &result_buff, &result_len);
 // You have one coupon expiring on 11/11/19
 ```
 
+You can find more examples at `./c_wrapper/pure_parser_examples.c`  
+and run them by `make c_run`
+
 ### Swift example
 
 ```
@@ -87,6 +93,9 @@ parser.activate(alias: "expiring", true)
 parser.assign(variable: "date", value: "11/11/19")
 parser.execute(formula, collapseSpaces: true, resetOnFinish: true)
 ```
+
+You can find more examples at `./swift_wrapper/PureParserExamples.swift`  
+and run them by `swift run`
 
 ## What's inside
 
