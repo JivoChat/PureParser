@@ -30,13 +30,13 @@ make c_lib # check `build` folder
 ### Swift Package Manager
 
 ```
-https://github.com/JivoSite/pure-parser.git
+https://github.com/JivoSite/pure-parser.git // branch 1.1.3
 ```
 
 ### Cocoapods
 
 ```
-pod 'PureParser'
+pod 'PureParser', '~> 1.1.3'
 ```
 
 ## Usage
@@ -197,4 +197,5 @@ parser.execute(formula, true, true);
 
 JivoSite LLC, <info@jivosite.com>, 2019.
 
-PureParser is available under the MIT license. See the LICENSE file for more info.
+PureParser is available under the MIT license.  
+See the LICENSE file for more info.
