@@ -1,6 +1,6 @@
 ## What is PureParser
 
-[![CI Status](https://img.shields.io/travis/bronenos/PureParser.svg?style=flat)](https://travis-ci.org/bronenos/PureParser)
+[![CI Status](https://img.shields.io/travis/bronenos/PureParser.svg?style=flat)](https://travis-ci.org/jivosite/PureParser)
 [![Version](https://img.shields.io/cocoapods/v/PureParser.svg?style=flat)](https://cocoapods.org/pods/PureParser)
 [![License](https://img.shields.io/cocoapods/l/PureParser.svg?style=flat)](https://cocoapods.org/pods/PureParser)
 [![Platform](https://img.shields.io/cocoapods/p/PureParser.svg?style=flat)](https://cocoapods.org/pods/PureParser)
@@ -30,13 +30,13 @@ make c_lib # check `build` folder
 ### Swift Package Manager
 
 ```
-https://github.com/JivoSite/pure-parser.git // branch 1.1.3
+https://github.com/JivoSite/pure-parser.git // branch 1.1.5 or later
 ```
 
 ### Cocoapods
 
 ```
-pod 'PureParser', '~> 1.1.3'
+pod 'PureParser', '~> 1.1.5'
 ```
 
 ## Usage
