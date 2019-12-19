@@ -7,7 +7,10 @@ let package = Package(
     products: [
         .library(
             name: "PureParser",
-            targets: ["PureParserCpp", "PureParserC", "PureParser"])
+            targets: ["PureParserCpp", "PureParserC", "PureParser"]),
+        .executable(
+            name: "PureParserExamples",
+            targets: ["PureParserExamples"])
     ],
     dependencies: [
     ],
@@ -34,6 +37,17 @@ let package = Package(
             path: "swift_wrapper",
             sources: [
                 "PureParser.swift"
+            ]),
+        .target(
+            name: "PureParserExamples",
+            dependencies: ["PureParser"],
+            path: "swift_wrapper",
+            sources: [
+                "PureParserExamples.swift",
+                "main.swift"
+            ],
+            swiftSettings: [
+                .define("OUTER_EXECUTION")
             ])
     ],
     cxxLanguageStandard: .cxx1z
