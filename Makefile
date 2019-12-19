@@ -18,6 +18,9 @@ c_run: pure_parser_examples
 	$(DIR)/pure_parser_examples
 	make dir_clean
 
+swift_run:
+	swift run
+
 dir_create:
 	mkdir -p $(DIR)
 

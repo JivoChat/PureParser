@@ -95,7 +95,7 @@ parser.execute(formula, collapseSpaces: true, resetOnFinish: true)
 ```
 
 You can find more examples at `./swift_wrapper/PureParserExamples.swift`  
-and run them by `swift run`
+and run them by `make swift_run`
 
 ## What's inside
 

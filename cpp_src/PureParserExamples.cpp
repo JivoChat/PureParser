@@ -13,34 +13,38 @@
 
 typedef struct {
     std::string formula;
-    std::string output;
+    std::map<std::string, std::string> variables;
+    std::set<std::string> aliases;
     std::string reference;
-} test_result_t;
+    std::string output;
+} example_meta_t;
 
-typedef test_result_t(*test_func_t)(void);
+typedef example_meta_t(*example_func_t)(void);
 
 typedef struct {
     std::string caption;
-    test_func_t executor;
-} test_meta_t;
+    example_func_t executor;
+} example_t;
 
-#pragma mark - Test Cases
+#pragma mark - Examples
 
-static test_result_t test_Plain() {
+static example_meta_t test_Plain() {
     PureParser parser;
     const std::string formula = "Hello world";
 
     const std::string output = parser.execute(formula, true, true);
     const std::string reference = "Hello world";
     
-    return test_result_t {
+    return example_meta_t {
         .formula = formula,
-        .output = output,
-        .reference = reference
+        .variables = std::map<std::string, std::string>(),
+        .aliases = std::set<std::string>(),
+        .reference = reference,
+        .output = output
     };
 }
 
-static test_result_t test_Variable() {
+static example_meta_t test_Variable() {
     PureParser parser;
     const std::string formula = "Hello, $name";
     
@@ -49,14 +53,16 @@ static test_result_t test_Variable() {
     const std::string output = parser.execute(formula, true, true);
     const std::string reference = "Hello, Stan";
     
-    return test_result_t {
+    return example_meta_t {
         .formula = formula,
-        .output = output,
-        .reference = reference
+        .variables = std::map<std::string, std::string>{ {"name", "Stan"} },
+        .aliases = std::set<std::string>(),
+        .reference = reference,
+        .output = output
     };
 }
 
-static test_result_t test_VariableAndBlockWithVariable() {
+static example_meta_t test_VariableAndBlockWithVariable() {
     PureParser parser;
     const std::string formula = "Please wait, $name: we're calling $[$anotherName ## another guy]";
     
@@ -66,14 +72,16 @@ static test_result_t test_VariableAndBlockWithVariable() {
     const std::string output = parser.execute(formula, true, true);
     const std::string reference = "Please wait, Stan: we're calling Paul";
     
-    return test_result_t {
+    return example_meta_t {
         .formula = formula,
-        .output = output,
-        .reference = reference
+        .variables = std::map<std::string, std::string>{ {"name", "Stan"}, {"anotherName", "Paul"} },
+        .aliases = std::set<std::string>(),
+        .reference = reference,
+        .output = output
     };
 }
 
-static test_result_t test_VariableAndBlockWithPlain() {
+static example_meta_t test_VariableAndBlockWithPlain() {
     PureParser parser;
     const std::string formula = "Please wait, $name: we're calling $[$anotherName ## another guy]";
     
@@ -82,14 +90,16 @@ static test_result_t test_VariableAndBlockWithPlain() {
     const std::string output = parser.execute(formula, true, true);
     const std::string reference = "Please wait, Stan: we're calling another guy";
     
-    return test_result_t {
+    return example_meta_t {
         .formula = formula,
-        .output = output,
-        .reference = reference
+        .variables = std::map<std::string, std::string>{ {"name", "Stan"} },
+        .aliases = std::set<std::string>(),
+        .reference = reference,
+        .output = output
     };
 }
 
-static test_result_t test_BlockWithRich() {
+static example_meta_t test_BlockWithRich() {
     PureParser parser;
     const std::string formula = "Congrats! You saved it $[in folder '$folder'].";
     
@@ -98,28 +108,32 @@ static test_result_t test_BlockWithRich() {
     const std::string output = parser.execute(formula, true, true);
     const std::string reference = "Congrats! You saved it in folder 'Documents'.";
     
-    return test_result_t {
+    return example_meta_t {
         .formula = formula,
-        .output = output,
-        .reference = reference
+        .variables = std::map<std::string, std::string>{ {"folder", "Documents"} },
+        .aliases = std::set<std::string>(),
+        .reference = reference,
+        .output = output
     };
 }
 
-static test_result_t test_InactiveBlock() {
+static example_meta_t test_InactiveBlock() {
     PureParser parser;
     const std::string formula = "Congrats! You saved it $[in folder '$folder'].";
     
     const std::string output = parser.execute(formula, true, true);
     const std::string reference = "Congrats! You saved it.";
     
-    return test_result_t {
+    return example_meta_t {
         .formula = formula,
-        .output = output,
-        .reference = reference
+        .variables = std::map<std::string, std::string>(),
+        .aliases = std::set<std::string>(),
+        .reference = reference,
+        .output = output
     };
 }
     
-static test_result_t test_ComplexActiveAlias() {
+static example_meta_t test_ComplexActiveAlias() {
     PureParser parser;
     const std::string formula = "$[Agent $creatorName ## You] changed reminder $[«$comment»] $[:target: for $[$targetName ## you]] on $date at $time";
     
@@ -131,14 +145,16 @@ static test_result_t test_ComplexActiveAlias() {
     const std::string output = parser.execute(formula, true, true);
     const std::string reference = "You changed reminder «Check his payment» for you on today at 11:30 AM";
     
-    return test_result_t {
+    return example_meta_t {
         .formula = formula,
-        .output = output,
-        .reference = reference
+        .variables = std::map<std::string, std::string>{ {"comment", "Check his payment"}, {"date", "today"}, {"time", "11:30 AM"} },
+        .aliases = std::set<std::string>{ "target" },
+        .reference = reference,
+        .output = output
     };
 }
 
-static test_result_t test_ComplexInactiveAlias() {
+static example_meta_t test_ComplexInactiveAlias() {
     PureParser parser;
     const std::string formula = "$[Agent $creatorName ## You] changed reminder $[«$comment»] $[:target: for $[$targetName ## you]] on $date at $time";
 
@@ -149,51 +165,66 @@ static test_result_t test_ComplexInactiveAlias() {
     const std::string output = parser.execute(formula, true, true);
     const std::string reference = "You changed reminder «Check his payment» on today at 11:30 AM";
 
-    return test_result_t {
+    return example_meta_t {
         .formula = formula,
-        .output = output,
-        .reference = reference
+        .variables = std::map<std::string, std::string>{ {"comment", "Check his payment"}, {"date", "today"}, {"time", "11:30 AM"} },
+        .aliases = std::set<std::string>(),
+        .reference = reference,
+        .output = output
     };
 }
 
-#pragma mark - Execute all Test Cases
+#pragma mark - Execute all examples
 
 #ifndef main_cpp
 #define main_cpp main
 #endif
 
 int main_cpp() {
-    #define declare_test_case(func) test_meta_t{.caption=#func,.executor=func}
-    const std::vector<test_meta_t> all_tests {
-        declare_test_case(test_Plain),
-        declare_test_case(test_Variable),
-        declare_test_case(test_VariableAndBlockWithVariable),
-        declare_test_case(test_VariableAndBlockWithPlain),
-        declare_test_case(test_BlockWithRich),
-        declare_test_case(test_InactiveBlock),
-        declare_test_case(test_ComplexActiveAlias),
-        declare_test_case(test_ComplexInactiveAlias)
+    #define declare_example_case(func) example_t{.caption=#func,.executor=func}
+    const std::vector<example_t> all_examples {
+        declare_example_case(test_Plain),
+        declare_example_case(test_Variable),
+        declare_example_case(test_VariableAndBlockWithVariable),
+        declare_example_case(test_VariableAndBlockWithPlain),
+        declare_example_case(test_BlockWithRich),
+        declare_example_case(test_InactiveBlock),
+        declare_example_case(test_ComplexActiveAlias),
+        declare_example_case(test_ComplexInactiveAlias)
     };
-    #undef declare_test_case
+    #undef declare_example_case
 
-    for (auto &test : all_tests) {
-        const test_result_t result = test.executor();
-        std::cout << "Testing '" << test.caption <<  "'" << std::endl;
-        std::cout << "> Formula: " << result.formula << std::endl;
+    bool passed = true;
+    for (auto &example : all_examples) {
+        const example_meta_t meta = example.executor();
+        std::cout << "Example \"" << example.caption <<  "\"" << std::endl;
+        std::cout << "> Formula: \"" << meta.formula << "\"" << std::endl;
+        
+        for (const auto &variable : meta.variables) {
+            std::cout << "> Assign variable \"" << variable.first << "\" = \"" << variable.second << "\"" << std::endl;
+        }
 
-        if (result.output == result.reference) {
+        for (const auto &alias : meta.aliases) {
+            std::cout << "> Enable alias \"" << alias << "\"" << std::endl;
+        }
+
+        std::cout << "> Output: \"" << meta.output << "\"" << std::endl;
+        
+        if (meta.output == meta.reference) {
             std::cout << "[OK]" << std::endl;
         }
         else {
-            std::cout << "> Output: " << result.output << std::endl;
-            std::cout << "> Reference: " << result.reference << std::endl;
+            std::cout << "> Reference: \"" << meta.reference << "\"" << std::endl;
             std::cout << "[Failed]" << std::endl;
-            return 1;
+            passed = false;
         }
         
         std::cout << std::endl;
     }
 
-    std::cout << "== All test cases passed OK ==" << std::endl;
+    if (passed) {
+        std::cout << "== All examples passed OK ==" << std::endl;
+    }
+    
     return 0;
 }

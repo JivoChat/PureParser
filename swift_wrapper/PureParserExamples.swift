@@ -1,89 +1,111 @@
-fileprivate struct Output {
+fileprivate struct Meta {
     let formula: String
-    let result: String
+    let variables: [String: String]
+    let aliases: [String]
+    let output: String
     let reference: String
     
     var hasPassed: Bool {
-        return (result == reference)
+        return (output == reference)
     }
 }
 
-fileprivate func execute_Plain() -> Output {
+fileprivate func execute_Plain() -> Meta {
     let parser = PureParser()
     let formula = "Hello world"
     
-    return Output(
+    let output = parser.execute(formula, collapseSpaces: true, resetOnFinish: true)
+    
+    return Meta(
         formula: formula,
-        result: parser.execute(formula, collapseSpaces: true, resetOnFinish: true),
+        variables: [:],
+        aliases: [],
+        output: output,
         reference: "Hello world"
     )
 }
 
-fileprivate func execute_Variable() -> Output {
+fileprivate func execute_Variable() -> Meta {
     let parser = PureParser()
     let formula = "Hello, $name"
     
     parser.assign(variable: "name", value: "Stan")
-    
-    return Output(
+    let output = parser.execute(formula, collapseSpaces: true, resetOnFinish: true)
+
+    return Meta(
         formula: formula,
-        result: parser.execute(formula, collapseSpaces: true, resetOnFinish: true),
+        variables: ["name": "Stan"],
+        aliases: [],
+        output: output,
         reference: "Hello, Stan"
     )
 }
 
-fileprivate func execute_VariableAndBlockWithVariable() -> Output {
+fileprivate func execute_VariableAndBlockWithVariable() -> Meta {
     let parser = PureParser()
     let formula = "Please wait, $name: we're calling $[$anotherName ## another guy]"
     
     parser.assign(variable: "name", value: "Stan")
     parser.assign(variable: "anotherName", value: "Paul")
+    let output = parser.execute(formula, collapseSpaces: true, resetOnFinish: true)
 
-    return Output(
+    return Meta(
         formula: formula,
-        result: parser.execute(formula, collapseSpaces: true, resetOnFinish: true),
+        variables: ["name": "Stan", "anotherName": "Paul"],
+        aliases: [],
+        output: output,
         reference: "Please wait, Stan: we're calling Paul"
     )
 }
 
-fileprivate func execute_VariableAndBlockWithPlain() -> Output {
+fileprivate func execute_VariableAndBlockWithPlain() -> Meta {
     let parser = PureParser()
     let formula = "Please wait, $name: we're calling $[$anotherName ## another guy]"
     
     parser.assign(variable: "name", value: "Stan")
+    let output = parser.execute(formula, collapseSpaces: true, resetOnFinish: true)
 
-    return Output(
+    return Meta(
         formula: formula,
-        result: parser.execute(formula, collapseSpaces: true, resetOnFinish: true),
+        variables: ["name": "Stan"],
+        aliases: [],
+        output: output,
         reference: "Please wait, Stan: we're calling another guy"
     )
 }
 
-fileprivate func execute_BlockWithRich() -> Output {
+fileprivate func execute_BlockWithRich() -> Meta {
     let parser = PureParser()
     let formula = "Congrats! You saved it $[in folder '$folder']."
     
     parser.assign(variable: "folder", value: "Documents")
+    let output = parser.execute(formula, collapseSpaces: true, resetOnFinish: true)
 
-    return Output(
+    return Meta(
         formula: formula,
-        result: parser.execute(formula, collapseSpaces: true, resetOnFinish: true),
+        variables: ["folder": "Documents"],
+        aliases: [],
+        output: output,
         reference: "Congrats! You saved it in folder 'Documents'."
     )
 }
 
-fileprivate func execute_InactiveBlock() -> Output {
+fileprivate func execute_InactiveBlock() -> Meta {
     let parser = PureParser()
     let formula = "Congrats! You saved it $[in folder '$folder']."
     
-    return Output(
+    let output = parser.execute(formula, collapseSpaces: true, resetOnFinish: true)
+    
+    return Meta(
         formula: formula,
-        result: parser.execute(formula, collapseSpaces: true, resetOnFinish: true),
+        variables: [:],
+        aliases: [],
+        output: output,
         reference: "Congrats! You saved it."
     )
 }
 
-fileprivate func execute_Complex() -> Output {
+fileprivate func execute_Complex() -> Meta {
     let parser = PureParser()
     let formula = "$[Agent $creatorName ## You] changed reminder $[«$comment»] $[:target: for $[$targetName ## you]] on $date at $time"
     
@@ -91,12 +113,33 @@ fileprivate func execute_Complex() -> Output {
     parser.assign(variable: "date", value: "today")
     parser.assign(variable: "time", value: "11:30 AM")
     parser.activate(alias: "target", true)
+    let output = parser.execute(formula, collapseSpaces: true, resetOnFinish: true)
 
-    return Output(
+    return Meta(
         formula: formula,
-        result: parser.execute(formula, collapseSpaces: true, resetOnFinish: true),
+        variables: ["comment": "Check his payment", "date": "today", "time": "11:30 AM"],
+        aliases: ["target"],
+        output: output,
         reference: "You changed reminder «Check his payment» for you on today at 11:30 AM"
     )
+}
+
+fileprivate func deepPrint(name: String, meta: Meta) {
+    print("Example \"\(name)\"")
+    print("> Formula: \"\(meta.formula)\"")
+    meta.variables.forEach { variable in print("> Assign variable \"\(variable.key)\" = \"\(variable.value)\"") }
+    meta.aliases.forEach { alias in print("> Enable alias \"\(alias)\"") }
+    print("> Output: \"\(meta.formula)\"")
+    
+    if meta.hasPassed {
+        print("[OK]")
+    }
+    else {
+        print("> Reference: \"\(meta.reference)\"")
+        print("[Failed]")
+    }
+    
+    print("")
 }
 
 #if OUTER_EXECUTION
@@ -104,7 +147,7 @@ import PureParser
 
 final class PureParserExamples {
     func run() {
-        let cases = [
+        let examples = [
             ("test_Plain", execute_Plain),
             ("test_Variable", execute_Variable),
             ("test_VariableAndBlockWithVariable", execute_VariableAndBlockWithVariable),
@@ -114,25 +157,19 @@ final class PureParserExamples {
             ("test_Complex", execute_Complex)
         ]
         
-        for (name, test) in cases {
-            let out = test()
-            print("Testing '\(name)'")
-            print("> Formula: \(out.formula)")
-
-            if out.hasPassed {
-                print("[OK]")
+        var passed = true
+        for (name, example) in examples {
+            let meta = example()
+            deepPrint(name: name, meta: meta)
+            
+            if !meta.hasPassed {
+                passed = false
             }
-            else {
-                print("> Output: \(out.result)")
-                print("> Reference: \(out.reference)")
-                print("[Failed]")
-                assertionFailure()
-            }
-
-            print(" ")
         }
         
-        print("== All test cases passed OK ==")
+        if passed {
+            print("== All examples passed OK ==")
+        }
     }
 }
 #else
@@ -150,38 +187,45 @@ final class PureParserExamples: XCTestCase {
     ]
     
     func test_Plain() {
-        let output = execute_Plain()
-        XCTAssertEqual(output.result, output.reference)
+        let meta = execute_Plain()
+        deepPrint(name: #function, meta: meta)
+        XCTAssert(meta.hasPassed)
     }
 
     func test_Variable() {
-        let output = execute_Variable()
-        XCTAssertEqual(output.result, output.reference)
+        let meta = execute_Variable()
+        deepPrint(name: #function, meta: meta)
+        XCTAssert(meta.hasPassed)
     }
 
     func test_VariableAndBlockWithVariable() {
-        let output = execute_VariableAndBlockWithVariable()
-        XCTAssertEqual(output.result, output.reference)
+        let meta = execute_VariableAndBlockWithVariable()
+        deepPrint(name: #function, meta: meta)
+        XCTAssert(meta.hasPassed)
     }
 
     func test_VariableAndBlockWithPlain() {
-        let output = execute_VariableAndBlockWithPlain()
-        XCTAssertEqual(output.result, output.reference)
+        let meta = execute_VariableAndBlockWithPlain()
+        deepPrint(name: #function, meta: meta)
+        XCTAssert(meta.hasPassed)
     }
 
     func test_BlockWithRich() {
-        let output = execute_BlockWithRich()
-        XCTAssertEqual(output.result, output.reference)
+        let meta = execute_BlockWithRich()
+        deepPrint(name: #function, meta: meta)
+        XCTAssert(meta.hasPassed)
     }
 
     func test_InactiveBlock() {
-        let output = execute_InactiveBlock()
-        XCTAssertEqual(output.result, output.reference)
+        let meta = execute_InactiveBlock()
+        deepPrint(name: #function, meta: meta)
+        XCTAssert(meta.hasPassed)
     }
 
     func test_Complex() {
-        let output = execute_Complex()
-        XCTAssertEqual(output.result, output.reference)
+        let meta = execute_Complex()
+        deepPrint(name: #function, meta: meta)
+        XCTAssert(meta.hasPassed)
     }
 }
 #endif
