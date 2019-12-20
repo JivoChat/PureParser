@@ -197,7 +197,7 @@ parser.execute(formula, true, true);
 
 ## Author and License
 
-JivoSite LLC, <info@jivosite.com>, 2019.
+JivoSite Inc. <info@jivochat.com>, 2019.
 
 PureParser is available under the MIT license.  
 See the LICENSE file for more info.

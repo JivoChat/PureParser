@@ -1,13 +1,13 @@
 Pod::Spec.new do |s|
   s.name                  = 'PureParser'
-  s.version               = '1.1.6'
+  s.version               = '1.1.7'
   s.summary               = 'PurePraser is a condition-based localization tool for C/C++/Swift.'
   s.description           = <<-DESC
 PureParser is a tool that was designed to simplify the process of adopting the localizable strings if many conditions could cause those strings to look in different ways.
                        DESC
 
-  s.author                = { 'JivoChat' => 'info@jivochat.com' }
-  s.homepage              = 'https://jivochat.com'
+  s.author                = { 'JivoSite Inc.' => 'info@jivochat.com' }
+  s.homepage              = 'https://www.jivochat.com'
   s.license               = { :type => 'MIT', :file => 'LICENSE' }
 
   s.source                = { :git => 'https://github.com/JivoSite/pure-parser.git', :tag => s.version.to_s }

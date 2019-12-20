@@ -2,7 +2,7 @@
 //  PureParser.cpp
 //  PureParser
 //
-//  Copyright © 2019 JivoSite. All rights reserved.
+//  Copyright © 2019 JivoSite Inc. All rights reserved.
 //  <For detailed info about how this parser works, please refer to README.md file>
 //
 
