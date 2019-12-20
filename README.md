@@ -13,8 +13,8 @@ PureParser allows putting the basic logic into strings themselves to control the
 ### C++ static library
 
 ```
-git clone https://github.com/JivoSite/pure-parser.git
-cd pure-parser
+git clone https://github.com/JivoChat/PureParser.git
+cd PureParser
 make cpp_lib
 ```
 
@@ -23,8 +23,8 @@ After that, please check the `build` folder for `PureParser.a` and `PureParser.h
 ### C static library
 
 ```
-git clone https://github.com/JivoSite/pure-parser.git
-cd pure-parser
+git clone https://github.com/JivoChat/PureParser.git
+cd PureParser
 make c_lib
 ```
 
@@ -33,7 +33,7 @@ After that, please check the `build` folder for `pure_parser.a` and `pure_parser
 ### Swift Package Manager
 
 ```
-https://github.com/JivoSite/pure-parser.git
+https://github.com/JivoChat/PureParser.git
 ```
 
 ### Cocoapods
