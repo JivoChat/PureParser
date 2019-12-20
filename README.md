@@ -1,6 +1,6 @@
 ## What is PureParser
 
-[![CI Status](https://img.shields.io/travis/jivosite/PureParser.svg?style=flat)](https://travis-ci.org/jivosite/PureParser)
+[![CI Status](https://img.shields.io/travis/JivoChat/PureParser.svg?style=flat)](https://travis-ci.org/JivoChat/PureParser)
 [![Version](https://img.shields.io/cocoapods/v/PureParser.svg?style=flat)](https://cocoapods.org/pods/PureParser)
 [![License](https://img.shields.io/cocoapods/l/PureParser.svg?style=flat)](https://cocoapods.org/pods/PureParser)
 [![Platform](https://img.shields.io/cocoapods/p/PureParser.svg?style=flat)](https://cocoapods.org/pods/PureParser)
