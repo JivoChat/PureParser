@@ -1,6 +1,5 @@
 ## What is PureParser
 
-[![CI Status](https://img.shields.io/travis/JivoChat/PureParser.svg?style=flat)](https://travis-ci.org/JivoChat/PureParser)
 [![Version](https://img.shields.io/cocoapods/v/PureParser.svg?style=flat)](https://cocoapods.org/pods/PureParser)
 [![License](https://img.shields.io/cocoapods/l/PureParser.svg?style=flat)](https://cocoapods.org/pods/PureParser)
 [![Platform](https://img.shields.io/cocoapods/p/PureParser.svg?style=flat)](https://cocoapods.org/pods/PureParser)
@@ -16,16 +15,20 @@ PureParser allows putting the basic logic into strings themselves to control the
 ```
 git clone https://github.com/JivoSite/pure-parser.git
 cd pure-parser
-make cpp_lib # check `build` folder
+make cpp_lib
 ```
+
+After that, please check the `build` folder for `PureParser.a` and `PureParser.hpp` files
 
 ### C static library
 
 ```
 git clone https://github.com/JivoSite/pure-parser.git
 cd pure-parser
-make c_lib # check `build` folder
+make c_lib
 ```
+
+After that, please check the `build` folder for `pure-parser.a` and `pure-parser.h` files
 
 ### Swift Package Manager
 
@@ -51,9 +54,8 @@ parser.enableAlias("one");
 parser.enableAlias("expiring");
 parser.assignVariable("date", "11/11/19");
 parser.execute(formula, true, true);
-
-// You have one coupon expiring on 11/11/19
 ```
+> You have one coupon expiring on 11/11/19
 
 You can find more examples at `./cpp_src/PureParserExamples.cpp`  
 and run them by `make cpp_run`
@@ -75,9 +77,8 @@ pure_parser_assign_var(&parser, "date", "11/11/19")
 char *result_buff = NULL;
 size_t result_len = 0;
 pure_parser_execute(&parser, formula, true, true, &result_buff, &result_len);
-
-// You have one coupon expiring on 11/11/19
 ```
+> You have one coupon expiring on 11/11/19
 
 You can find more examples at `./c_wrapper/pure_parser_examples.c`  
 and run them by `make c_run`
@@ -93,6 +94,7 @@ parser.activate(alias: "expiring", true)
 parser.assign(variable: "date", value: "11/11/19")
 parser.execute(formula, collapseSpaces: true, resetOnFinish: true)
 ```
+> You have one coupon expiring on 11/11/19
 
 You can find more examples at `./swift_wrapper/PureParserExamples.swift`  
 and run them by `make swift_run`
