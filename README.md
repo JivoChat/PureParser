@@ -15,7 +15,7 @@ PureParser allows putting the basic logic into strings themselves to control the
 ```
 git clone https://github.com/JivoChat/PureParser.git
 cd PureParser
-make cpp_lib
+CC=g++ make cpp_lib
 ```
 
 After that, please check the `build` folder for `PureParser.a` and `PureParser.hpp` files
@@ -25,7 +25,7 @@ After that, please check the `build` folder for `PureParser.a` and `PureParser.h
 ```
 git clone https://github.com/JivoChat/PureParser.git
 cd PureParser
-make c_lib
+CC=g++ make c_lib
 ```
 
 After that, please check the `build` folder for `pure_parser.a` and `pure_parser.h` files

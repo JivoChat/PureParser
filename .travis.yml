@@ -17,4 +17,4 @@ addons:
       - g++-7
 
 script:
-  - make cpp_run
+  - CC=g++-7 make cpp_run
