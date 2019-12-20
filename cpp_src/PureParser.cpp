@@ -19,6 +19,8 @@ const char * const kPureParserDefaultBlockCloserToken = "]";
 const char * const kPureParserDefaultSeparatorToken = "##";
 const char * const kPureParserDefaultAliasToken = ":";
 
+static bool is_space(char symbol);
+
 PureParser::PureParser(PureConfig config) {
     this->_config = config;
 }
@@ -143,8 +145,7 @@ std::optional<PureElement> PureParser::recognizeFrame(std::string input, size_t 
             // No especial tokens were found, so just continue looking
             else {
                 if (not any_symbol_scanned) {
-                    const auto callback = [](char symbol) { return !isspace(symbol); };
-                    any_symbol_scanned = scanner.detectWithCallback(callback);
+                    any_symbol_scanned = scanner.detectWithCallback(is_space);
                 }
                 
                 scanner.lookBy(1);
@@ -370,4 +371,8 @@ std::string PureParser::removeExtraSpaces(std::string string) {
     else {
         return std::string();
     }
+}
+
+static bool is_space(char symbol) {
+    return isspace(symbol) ? 1 : 0;
 }

@@ -105,8 +105,14 @@ bool PureScanner::detectAndExtract(std::string opener_token, std::string closer_
 	return false;
 }
 
-bool PureScanner::detectWithCallback(std::function<bool(char)> callback) {
+bool PureScanner::detectWithCallback(bool(*callback)(char)) {
     return callback(*_current_iter);
+}
+
+bool PureScanner::detectWithCallback(bool(*callback)(std::string)) {
+    const size_t index = _current_iter - input.begin();
+    const std::string slice = input.substr(index);
+    return callback(slice);
 }
 
 void PureScanner::lookBy(size_t offset) {

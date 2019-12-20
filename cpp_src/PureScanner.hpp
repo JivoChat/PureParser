@@ -65,7 +65,8 @@ public:
      * @param callback callback to process the current subject
      * @return status of processing
      */
-    bool detectWithCallback(std::function<bool(char)> callback);
+    bool detectWithCallback(bool(*callback)(char));
+    bool detectWithCallback(bool(*callback)(std::string));
 
     /**
      * Move the internal cursor forward inside the contents
