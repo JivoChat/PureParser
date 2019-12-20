@@ -1,8 +1,9 @@
 ## What is PureParser
 
+[![Platform](https://img.shields.io/cocoapods/p/PureParser.svg?style=flat)](https://cocoapods.org/pods/PureParser)
+[![Build Status](https://travis-ci.org/JivoChat/PureParser.svg?branch=master)](https://travis-ci.org/JivoChat/PureParser)
 [![Version](https://img.shields.io/cocoapods/v/PureParser.svg?style=flat)](https://cocoapods.org/pods/PureParser)
 [![License](https://img.shields.io/cocoapods/l/PureParser.svg?style=flat)](https://cocoapods.org/pods/PureParser)
-[![Platform](https://img.shields.io/cocoapods/p/PureParser.svg?style=flat)](https://cocoapods.org/pods/PureParser)
 
 PureParser is a tool that was designed to simplify the process of adopting the localizable strings if many conditions could cause those strings to look in different ways.
 
@@ -15,7 +16,7 @@ PureParser allows putting the basic logic into strings themselves to control the
 ```
 git clone https://github.com/JivoChat/PureParser.git
 cd PureParser
-CC=g++ make cpp_lib
+make cpp_lib
 ```
 
 After that, please check the `build` folder for `PureParser.a` and `PureParser.hpp` files
@@ -25,7 +26,7 @@ After that, please check the `build` folder for `PureParser.a` and `PureParser.h
 ```
 git clone https://github.com/JivoChat/PureParser.git
 cd PureParser
-CC=g++ make c_lib
+make c_lib
 ```
 
 After that, please check the `build` folder for `pure_parser.a` and `pure_parser.h` files

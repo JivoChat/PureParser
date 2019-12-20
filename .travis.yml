@@ -10,4 +10,5 @@ addons:
     sources: ubuntu-toolchain-r-test
     packages: g++-7
 
+language: cpp
 script: make cpp_run
