@@ -4,8 +4,10 @@ git:
 branches:
   only: master
 
-language: cpp
-compiler: gcc
-
 os: linux
+addons:
+  apt:
+    sources: ubuntu-toolchain-r-test
+    packages: g++-7
+
 script: make cpp_run
