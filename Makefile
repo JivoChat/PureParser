@@ -39,8 +39,8 @@ PureParser.o: dir_create
 PureParser.a: dir_create PureScanner.o PureParser.o
 	$(ARCHIVE) $(DIR)/PureParser.a $(DIR)/PureScanner.o $(DIR)/PureParser.o
 
-PureParserExamples: dir_create PureParser.a
-	$(COMPILE) $(DIR)/PureParser.a cpp_src/PureParserExamples.cpp -o $(DIR)/PureParserExamples
+PureParserExamples: dir_create PureScanner.o PureParser.o
+	$(COMPILE) $(DIR)/PureScanner.o $(DIR)/PureParser.o cpp_src/PureParserExamples.cpp -o $(DIR)/PureParserExamples
 
 c_compile: pure_parser.a
 	cp c_wrapper/pure_parser.h $(DIR)
