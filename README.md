@@ -28,7 +28,7 @@ cd pure-parser
 make c_lib
 ```
 
-After that, please check the `build` folder for `pure-parser.a` and `pure-parser.h` files
+After that, please check the `build` folder for `pure_parser.a` and `pure_parser.h` files
 
 ### Swift Package Manager
 

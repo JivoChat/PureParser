@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name                  = 'PureParser'
-  s.version               = '1.1.5'
+  s.version               = '1.1.6'
   s.summary               = 'PurePraser is a condition-based localization tool for C/C++/Swift.'
   s.description           = <<-DESC
 PureParser is a tool that was designed to simplify the process of adopting the localizable strings if many conditions could cause those strings to look in different ways.
@@ -17,8 +17,8 @@ PureParser is a tool that was designed to simplify the process of adopting the l
 
   s.library               = 'c++'
   s.pod_target_xcconfig   = {
-  	'CLANG_CXX_LANGUAGE_STANDARD' => 'c++17',
-        'GCC_WARN_INHIBIT_ALL_WARNINGS' => 'YES'
+    'CLANG_CXX_LANGUAGE_STANDARD' => 'c++17',
+    'GCC_WARN_INHIBIT_ALL_WARNINGS' => 'YES'
   }
 
   s.ios.deployment_target = '8.0'
