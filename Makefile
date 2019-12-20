@@ -1,4 +1,4 @@
-COMPILE=${CC} -std=c++17
+COMPILE=clang++ -std=c++17
 ARCHIVE=ar rvs
 DIR=build
 
@@ -51,5 +51,5 @@ pure_parser.o: dir_create
 pure_parser.a: dir_create PureScanner.o PureParser.o pure_parser.o
 	$(ARCHIVE) $(DIR)/pure_parser.a $(DIR)/PureScanner.o $(DIR)/PureParser.o $(DIR)/pure_parser.o
 
-pure_parser_examples: dir_create pure_parser.a
-	$(COMPILE) $(DIR)/pure_parser.a c_wrapper/pure_parser_examples.c -o $(DIR)/pure_parser_examples
+pure_parser_examples: dir_create pure_scanner.o pure_parser.o
+	$(COMPILE) $(DIR)/pure_scanner.o $(DIR)/pure_parser.o c_wrapper/pure_parser_examples.c -o $(DIR)/pure_parser_examples

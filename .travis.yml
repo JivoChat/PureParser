@@ -2,19 +2,10 @@ git:
   depth: 1
 
 branches:
-  only:
-    - master
+  only: master
 
 language: cpp
 compiler: gcc
 
 os: linux
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-7
-
-script:
-  - CC=clang++ make cpp_run
+script: make cpp_run
