@@ -1,4 +1,8 @@
-COMPILE=g++ -std=c++17
+if [ "$(CC)" = "" ]; then
+CC=g++
+fi
+
+COMPILE=$(CC) -std=c++17
 ARCHIVE=ar rvs
 DIR=build
 
