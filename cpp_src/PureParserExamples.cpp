@@ -224,7 +224,9 @@ int main_cpp() {
 
     if (passed) {
         std::cout << "== All examples passed OK ==" << std::endl;
+        return 0;
     }
-    
-    return 0;
+    else {
+        return 1;
+    }
 }

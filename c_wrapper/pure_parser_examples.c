@@ -270,7 +270,9 @@ int main_c() {
     
     if (passed) {
         printf("== All examples passed OK ==\n");
+        return 0;
     }
-
-    return 0;
+    else {
+        return 1;
+    }
 }
