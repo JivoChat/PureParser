@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name                  = 'PureParser'
-  s.version               = '1.1.9'
+  s.version               = '1.2.0'
   s.summary               = 'PurePraser is a condition-based localization tool for C/C++/Swift.'
   s.description           = <<-DESC
 PureParser is a tool that was designed to simplify the process of adopting the localizable strings if many conditions could cause those strings to look in different ways.
